@@ -1,4 +1,5 @@
 {
+ 
   "Sets": {
     "CGL 2026": {
       "questions": {
@@ -1523,21 +1524,21 @@
           "setNum": 1
         },
         "-PDZtnqZ5aelfGw_JpPm": {
-          "answerEx": "Sentence B introduces the topic (Observatories) so it must come first. Sentence C uses the pronoun 'They' to refer to observatories and describes where they are built, so it follows B. Sentence D introduces telescopes placed inside the domes, and sentence A refers back to them with 'These' which can turn around to track stars. Thus, the correct logical order is BCDA.",
+          "answerEx": "Sentence B se topic introduce hota hai ki observatories kya hoti hain (\"Observatories are places to study space.\"). Iske baad Sentence C observatories ke location ke baare me batata hai (\"They are mostly built on the mountain tops.\"). Phir Sentence D building ke andar telescopes ki placement batata hai (\"Telescopes are placed in the dome-shaped roof...\"). Aakhiri me Sentence A me pronoun 'These' telescopes ko refer karta hai (\"These can turn around to track stars...\"). Isliye sahi logical sequence BCDA hai.",
           "answerExImage": "",
-          "correctAnsw": "B) Observatories are places to stud",
+          "correctAnsw": "B) BCDA",
           "direQuestion": "",
           "exmShift": "",
           "key": "-PDZtnqZ5aelfGw_JpPm",
-          "optionA": "A) These can turn around to track s",
+          "optionA": "A) ACDB",
           "optionAImage": "",
-          "optionB": "B) Observatories are places to stud",
+          "optionB": "B) BCDA",
           "optionBImage": "",
-          "optionC": "C) They are mostly built on the mou",
+          "optionC": "C) CBDA",
           "optionCImage": "",
-          "optionD": "D) Telescopes are placed in the dor\n\nA) 1. ACDB\nB) 2. BCDA\nC) 3. CBDA\nD) 4. DCBA",
+          "optionD": "D) DCBA",
           "optionDImage": "",
-          "question": "Q.2 Given below are four jumbled sente\r\nlogical sequence.",
+          "question": "Q.2 Given below are four jumbled sentences. Select the option that gives their correct logical sequence.\r\n\r\nA. These can turn around to track stars with the rotation of Earth.\r\nB. Observatories are places to study space.\r\nC. They are mostly built on the mountain tops.\r\nD. Telescopes are placed in the dome-shaped roof of the building.",
           "questionImage": "",
           "section": "English",
           "setNum": 1
