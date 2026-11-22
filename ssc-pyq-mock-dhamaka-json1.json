@@ -4018,25 +4018,35 @@
   "categories": {
     "-P6wV4kS65qCKDJ-1XDb": {
       "categoryImage": "https://vimaldahake.github.io/demohscproject1/hsclogo/twentyfour.png",
-      "categoryName": "SSC CGL 2024",
+      "categoryName": "CGL 2026",
       "setInstruction": {
         "-P6z37DsYiRhkoXiVrh3": "⏱️ Total Duration: 60 Minutes\n📝 Total Questions: 100 Multiple Choice Questions (MCQs)\n🎯 Total Marks: 200 Marks (2 Mark per correct answer)\n⏳ Timer Behavior: Starts automatically when you tap On Sets.\n⚡ Auto-Submission: System will lock and submit when timer hits 00:00.",
-         "-P6z37DsYiRhkoXiVrh": "⏱️ Total Duration: 60 Minutes\n📝 Total Questions: 100 Multiple Choice Questions (MCQs)\n🎯 Total Marks: 200 Marks (2 Mark per correct answer)\n⏳ Timer Behavior: Starts automatically when you tap On Sets.\n⚡ Auto-Submission: System will lock and submit when timer hits 00:00."
+        "-P72nJscCX8xG1ZjG6eV": "⏱️ Total Duration: 60 Minutes\n📝 Total Questions: 100 Multiple Choice Questions (MCQs)\n🎯 Total Marks: 200 Marks (2 Mark per correct answer)\n⏳ Timer Behavior: Starts automatically when you tap On Sets.\n⚡ Auto-Submission: System will lock and submit when timer hits 00:00."
       },
       "setMarks": {
         "-P6z37DsYiRhkoXiVrh3": 2,
-        "-P6z37DsYiRhkoXiVrh": 2
+        "-P72nJscCX8xG1ZjG6eV": 2
       },
       "setName": {
         "-P6z37DsYiRhkoXiVrh3": "SSC CGL 09/09/2024 Shift - 2",
-        "-P6z37DsYiRhkoXiVrh": "SSC CGL 09/09/2024 Shift - 1"
+        "-P72nJscCX8xG1ZjG6eV": "SSC CGL 09/09/2024 Shift - 1"
       },
       "setNegMarks": {
         "-P6z37DsYiRhkoXiVrh3": 0.5,
-        "-P6z37DsYiRhkoXiVrh": 0.5
+        "-P72nJscCX8xG1ZjG6eV": 0.5
       },
       "setNum": 0,
       "setTime": {
         "-P6z37DsYiRhkoXiVrh3": 60,
-        "-P6z37DsYiRhkoXiVrh": 60
+        "-P72nJscCX8xG1ZjG6eV": 60
       }
+    },
+    "-P72lObvQw6n7HI3cZZs": {
+      "categoryImage": "https://vimaldahake.github.io/demohscproject1/hsclogo/twentythree.png",
+      "categoryName": "SSC CGL 2023",
+      "setNum": 0
+    }
+  },
+  "gkquiz": "https://vimaldahake.github.io/mock_question_paper/ssc-pyq-mock-dhamaka-json1.json",
+  "grammarquiz": "https://vimaldahake.github.io/mock_question_paper/ssc-pyq-mock-dhamaka-json1.json"
+}
