@@ -1,0 +1,68 @@
+name: SSC PYQ automation
+on:
+  schedule:
+    - cron: "30 2 * * *"
+    - cron: "40 */3 * * *"
+  workflow_dispatch:
+    inputs:
+      only:     { description: "Sirf ye papers (jaise 2023-1,2023-2). Khali = sab", required: false, default: "" }
+      max_pdfs: { description: "Is run me max kitne PDF (0 = jitne ho sake)", required: false, default: "0" }
+      dry_run:  { description: "1 = GitHub par save mat karo, sirf test", required: false, default: "" }
+      force:    { description: "1 = pause/key khatam ignore karke abhi chalao", required: false, default: "" }
+concurrency:
+  group: pyq-automation
+  cancel-in-progress: false
+permissions:
+  contents: write
+  actions: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env:
+      GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      GH_BRANCH: ${{ github.ref_name }}
+      AI_KEYS: ${{ secrets.AI_KEYS }}
+      AI_BASE: ${{ vars.AI_BASE || 'https://coarena.ai/api/v1' }}
+      AI_MODELS: ${{ vars.AI_MODELS }}
+      CAT_IMAGES: ${{ vars.CAT_IMAGES }}
+      MAX_PDFS: ${{ github.event.inputs.max_pdfs || '0' }}
+      ONLY: ${{ github.event.inputs.only }}
+      DRY_RUN: ${{ github.event.inputs.dry_run }}
+      FORCE: ${{ github.event.inputs.force }}
+      TIME_BUDGET_MIN: "290"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: automation
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install
+        working-directory: automation
+        run: npm install --no-audit --no-fund
+      - name: Gate
+        id: gate
+        working-directory: automation
+        run: node run.mjs --gate
+      - name: Browser install
+        if: steps.gate.outputs.go == 'true'
+        working-directory: automation
+        run: npx playwright install --with-deps chromium
+      - name: Run
+        id: run
+        if: steps.gate.outputs.go == 'true'
+        working-directory: automation
+        run: node run.mjs
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.gate.outputs.go == 'true'
+        with:
+          name: run-output
+          path: automation/out
+          if-no-files-found: ignore
+      - name: Agla run turant
+        if: steps.run.outputs.next == 'continue'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pyq.yml --repo "${{ github.repository }}" --ref "${{ github.ref_name }}"
