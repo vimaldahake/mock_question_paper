@@ -70,6 +70,7 @@ function nextResume(now = Date.now()) {
 }
 function setOutput(k, v) { if (E.GITHUB_OUTPUT) try { fs.appendFileSync(E.GITHUB_OUTPUT, `${k}=${v}\n`); } catch (e) {} log(`[output] ${k}=${v}`); }
 class KeyExhausted extends Error {}
+const MODEL_LEVEL_RE = /not part of the free tier|free tier|is not available|not supported|unsupported|does not exist|no access to (?:the )?model|model.{0,40}(?:not found|unavailable|disabled)/i;
 const QUOTA_RE = /insufficient|balance|credit|quota|exhaust|billing|out of (?:funds|tokens)|no remaining|exceed|per\s*day|daily|limit\s*(?:reached|exceeded)|top.?up|recharge|payment/i;
 
 /* ---------------- Kaam ki list ---------------- */
@@ -109,7 +110,7 @@ async function processPaper(K, task, tmpPdf) {
   if (E.TEST_MODULE) await (await import(pathToFileURL(path.resolve(E.TEST_MODULE)).href)).setup(ctx, cfg);
   const page = await ctx.newPage();
   page.setDefaultTimeout(60000);
-  const dialogs = []; let checkerBlock = "", exhausted = "", quotaRun = 0;
+  const dialogs = []; let checkerBlock = "", exhausted = "", quotaRun = 0, lastWhy = "";
   // AI ke har jawab par nazar: balance/limit khatam hui to turant ruko aur agli key par jao
   page.on("response", async (r) => {
     try {
@@ -119,9 +120,11 @@ async function processPaper(K, task, tmpPdf) {
       if (st < 400) return;
       let body = ""; try { body = (await r.text()).slice(0, 400); } catch (e) {}
       if (exhausted) return;
-      const why = `HTTP ${st} ${body.replace(/\s+/g, " ").slice(0, 160)}`;
-      if (st === 402 || st === 401) exhausted = why;
-      else if ((st === 429 || st === 403 || st === 400) && QUOTA_RE.test(body) && ++quotaRun >= 6) exhausted = why;
+      const why = `HTTP ${st} ${body.replace(/\s+/g, " ").slice(0, 200)}`;
+      if (MODEL_LEVEL_RE.test(body)) return;                       // "ye model free tier me nahi" — sirf us model par rok, key theek hai (app pool me dusra model chunegi)
+      lastWhy = why;
+      if (st === 401) exhausted = why;                              // key galat/band
+      else if ((st === 402 || st === 429 || st === 403 || st === 400) && (st === 402 || QUOTA_RE.test(body)) && ++quotaRun >= 6) exhausted = why;   // lagataar 6 baar limit/balance jawab, beech me ek bhi safal nahi
       if (exhausted) { log(`   🔑 key #${K.keyNo} ki limit/balance khatam lagti hai (${exhausted})`); ctx.close().catch(() => {}); }
     } catch (e) {}
   });
@@ -226,6 +229,7 @@ async function processPaper(K, task, tmpPdf) {
     if (!/✅ GitHub par save ho gaya/.test(st)) throw new Error((checkerBlock ? "Checker ne roka:\n" + checkerBlock : "JSON save nahi hua: " + st).slice(0, 900));
     return { total, stats, note: st.split("\n")[0] };
   } catch (e) {
+    if (!exhausted && quotaRun >= 2) exhausted = lastWhy;          // kaam fail hua aur akhir ke jawab limit/balance ke the (beech me ek bhi safal nahi) => key khatam
     if (exhausted) throw Object.assign(new KeyExhausted(exhausted), { keyNo: K.keyNo });
     try { await page.screenshot({ path: path.join(OUT, `fail_${task.id}.png`), fullPage: false }); } catch (x) {}
     if (/Pool ke saare model band|Koi model image nahi/.test(String(e.message))) K.model = null;   // agle paper par model dobara chuno
@@ -298,7 +302,7 @@ async function main() {
           log(`   key #${K.keyNo} (${cfg.aiKeys.length} me se, ${dead.size} khatam)`);
           try { res = await processPaper(K, t, tmpPdf); err = null; break; }
           catch (e) {
-            if (e instanceof KeyExhausted) { dead.add(K.keyNo); state.exhausted[K.keyNo] = new Date().toISOString(); if (!cfg.dry) await saveState(state); summary.push(`🔑 key #${K.keyNo} ki limit khatam (${String(e.message).slice(0, 80)})`); continue; }
+            if (e instanceof KeyExhausted) { dead.add(K.keyNo); state.exhausted[K.keyNo] = new Date().toISOString(); if (!cfg.dry) await saveState(state); summary.push(`🔑 key #${K.keyNo} ki limit khatam (${String(e.message).slice(0, 220)})`); continue; }
             err = e; break;
           }
         }
