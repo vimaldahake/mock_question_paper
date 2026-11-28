@@ -9,6 +9,11 @@
       "attempts": 1,
       "error": "AI convert me 5 question fail rahe",
       "at": "2026-11-28T10:20:16.483Z"
+    },
+    "2023-6": {
+      "attempts": 1,
+      "error": "Checker ne roka:\n⚠ Checker ko 1 dikkat mili:\n\nSame option: 1\n• Math Q.16 — Option B aur D same hain: \"5 दिन\"\n\nFir bhi save karun? (Cancel = pehle JSON tab me theek karo)",
+      "at": "2026-11-28T11:01:32.830Z"
     }
   },
   "exhausted": {},
